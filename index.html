@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>NoobSlayer League</title>
+
+<style>
+body {
+  font-family: Arial;
+  margin:0;
+  background: linear-gradient(135deg,#020617,#0f172a);
+  color:white;
+}
+
+/* анимация */
+.fade-in {
+  animation: fadeIn 0.5s ease;
+}
+@keyframes fadeIn {
+  from {opacity:0; transform:translateY(10px);}
+  to {opacity:1; transform:translateY(0);}
+}
+
+header {
+  text-align:center;
+  padding:25px;
+  background:#020617;
+  border-bottom:1px solid #1e293b;
+}
+
+.container {
+  padding:20px;
+  max-width:1100px;
+  margin:auto;
+}
+
+.card {
+  background:#020617;
+  padding:20px;
+  border-radius:12px;
+  margin-bottom:20px;
+  box-shadow:0 0 20px rgba(0,0,0,0.6);
+  transition:0.3s;
+}
+
+.card:hover {
+  transform:translateY(-5px);
+}
+
+/* кнопка */
+.discord-btn {
+  display:inline-block;
+  margin-top:10px;
+  padding:10px 20px;
+  background:#5865F2;
+  color:white;
+  border-radius:8px;
+  text-decoration:none;
+  transition:0.2s;
+}
+.discord-btn:hover {
+  background:#4752c4;
+}
+
+/* таблица */
+table { width:100%; border-collapse:collapse; }
+th,td { padding:12px; border-bottom:1px solid #334155; }
+
+tr:hover {
+  background:#334155;
+  cursor:pointer;
+}
+
+.points {
+  background:#22c55e;
+  padding:5px 10px;
+  border-radius:8px;
+  font-weight:bold;
+}
+
+/* матчи */
+.match {
+  background:#020617;
+  border:1px solid #334155;
+  padding:15px;
+  border-radius:10px;
+  margin-bottom:10px;
+  transition:0.2s;
+}
+.match:hover {
+  transform:scale(1.02);
+}
+.win {
+  color:#22c55e;
+  font-weight:bold;
+}
+
+/* профиль */
+.player-profile { display:none; }
+
+img { width:120px; border-radius:10px; }
+
+.stats-grid {
+  display:grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap:10px;
+  margin-top:15px;
+}
+
+.stat-box {
+  background:#020617;
+  border:1px solid #334155;
+  padding:12px;
+  border-radius:10px;
+  text-align:center;
+}
+
+.gauge {
+  width:160px;
+  height:160px;
+  border-radius:50%;
+  margin:20px auto;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:22px;
+  font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>🔥 NoobSlayer League</h1>
+<p>Roblox Rivals Tournament</p>
+</header>
+
+<div class="container">
+
+<div id="main">
+
+<!-- Discord -->
+<div class="card fade-in">
+<h2>💬 Присоединяйся</h2>
+<a class="discord-btn" href="https://discord.gg/rQ37EJXH" target="_blank">
+🚀 Discord
+</a>
+</div>
+
+<!-- MVP -->
+<div class="card fade-in">
+<h2>🏆 Лидеры</h2>
+<p><b>MVP:</b> Faerbol4ik1 (2), TUTY_FRUTY (1)</p>
+<p><b>EVP:</b> Marcocondesso (3), Soul_hunter (1),
+Fillipepipoquese (1), Faerbol4ik1 (1), TUTY_FRUTY (1)</p>
+</div>
+
+<!-- Ranking -->
+<div class="card fade-in">
+<h2>📊 Ranking</h2>
+<input id="search" placeholder="Поиск...">
+<table id="rankingTable"></table>
+</div>
+
+<!-- Matches -->
+<div class="card fade-in">
+<h2>🎮 Последние матчи (Nexus Masters)</h2>
+
+<div class="match">
+<b>ФИНАЛ</b><br>
+TUTY_FRUTY vs Fillipepipoquese <span class="win">3:1</span><br>
+<small>2:5 | 5:1 | 5:2 | 5:1</small>
+</div>
+
+<div class="match">
+<b>3 место</b><br>
+Faerbol4ik1 vs Marcocondesso <span class="win">1:0 (тех)</span>
+</div>
+
+<div class="match">
+<b>Полуфинал</b><br>
+TUTY_FRUTY vs Faerbol4ik1 <span class="win">2:1</span><br>
+<small>5:3 | 3:5 | 5:4</small><br><br>
+Fillipepipoquese vs Marcocondesso <span class="win">1:0 (тех)</span>
+</div>
+
+<div class="match">
+<b>Группы</b><br>
+Fillipepipoquese vs TUTY_FRUTY <span class="win">2:0</span><br>
+<small>5:1 | 5:1</small><br><br>
+Kurtikswagga vs Soul_hunter <span class="win">1:2</span>
+</div>
+
+</div>
+
+</div>
+
+<!-- профиль -->
+<div id="profile" class="player-profile card fade-in">
+<span onclick="goBack()" style="cursor:pointer;color:#38bdf8;">← Назад</span>
+
+<h2 id="playerName"></h2>
+<img id="playerSkin">
+
+<div id="kdGauge" class="gauge"></div>
+
+<div class="stats-grid">
+<div class="stat-box">Points<br><span id="playerPoints"></span></div>
+<div class="stat-box">Kills<br><span id="playerKills"></span></div>
+<div class="stat-box">Deaths<br><span id="playerDeaths"></span></div>
+<div class="stat-box">HS %<br><span id="playerHS"></span></div>
+<div class="stat-box">MVP<br><span id="playerMVP"></span></div>
+<div class="stat-box">EVP<br><span id="playerEVP"></span></div>
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+const players = [
+{name:"Faerbol4ik1",points:48,kd:1.62,kills:103,deaths:69,hs:"42.4%",mvp:2,evp:1,skin:"https://robohash.org/faerbol.png"},
+{name:"TUTY_FRUTY",points:42,kd:1.17,kills:115,deaths:98,hs:"43.5%",mvp:1,evp:1,skin:"https://robohash.org/tuty.png"},
+{name:"Marcocondesso",points:26,kd:1.03,kills:78,deaths:76,hs:"55.1%",mvp:0,evp:3,skin:"https://robohash.org/marco.png"},
+{name:"Soul_hunter",points:24,kd:0.80,kills:78,deaths:97,hs:"38.5%",mvp:0,evp:1,skin:"https://robohash.org/soul.png"},
+{name:"Fillipepipoquese",points:17,kd:1.24,kills:36,deaths:29,hs:"47.2%",mvp:0,evp:1,skin:"https://robohash.org/filipe.png"},
+{name:"Marsmallow",points:7,kd:0.76,kills:22,deaths:29,hs:"13.6%",mvp:0,evp:0,skin:"https://robohash.org/marshmallow.png"},
+{name:"Ilun4ik_eye",points:5,kd:0.27,kills:18,deaths:67,hs:"22.2%",mvp:0,evp:0,skin:"https://robohash.org/ilun.png"},
+{name:"Kurtikswagga",points:2,kd:0.61,kills:19,deaths:31,hs:"31.6%",mvp:0,evp:0,skin:"https://robohash.org/kurtik.png"}
+];
+
+players.sort((a,b)=>b.points-a.points);
+
+const table = document.getElementById("rankingTable");
+
+function render(list){
+  table.innerHTML = "<tr><th>#</th><th>Player</th><th>Points</th></tr>";
+
+  list.forEach((p,i)=>{
+    table.innerHTML += `
+    <tr onclick="openProfile('${p.name}')">
+      <td>${i+1}</td>
+      <td>${p.name}</td>
+      <td><span class="points">${p.points}</span></td>
+    </tr>`;
+  });
+}
+
+render(players);
+
+function openProfile(name){
+  const p = players.find(pl => pl.name === name);
+
+  main.style.display="none";
+  profile.style.display="block";
+
+  playerName.innerText=p.name;
+  playerPoints.innerText=p.points;
+  playerKills.innerText=p.kills;
+  playerDeaths.innerText=p.deaths;
+  playerHS.innerText=p.hs;
+  playerMVP.innerText=p.mvp;
+  playerEVP.innerText=p.evp;
+  playerSkin.src=p.skin;
+
+  const gauge = document.getElementById("kdGauge");
+
+  const percent = Math.min((p.kd / 2) * 100, 100);
+
+  let color = "#ef4444";
+  if(p.kd > 1.10) color = "#22c55e";
+  else if(p.kd >= 1) color = "#eab308";
+
+  gauge.style.background = `conic-gradient(${color} ${percent}%, #1e293b ${percent}%)`;
+  gauge.innerText = "KD " + p.kd;
+}
+
+function goBack(){
+  main.style.display="block";
+  profile.style.display="none";
+}
+
+search.addEventListener("input",()=>{
+  const v=search.value.toLowerCase();
+  render(players.filter(p=>p.name.toLowerCase().includes(v)));
+});
+
+</script>
+
+</body>
+</html>
