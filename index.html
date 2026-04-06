@@ -56,8 +56,8 @@ header {
   color:white;
   border-radius:8px;
   text-decoration:none;
-  transition:0.2s;
 }
+
 .discord-btn:hover {
   background:#4752c4;
 }
@@ -78,6 +78,11 @@ tr:hover {
   font-weight:bold;
 }
 
+/* стрелки */
+.up { color:#22c55e; font-weight:bold; }
+.down { color:#ef4444; font-weight:bold; }
+.change { font-size:12px; opacity:0.8; }
+
 /* матчи */
 .match {
   background:#020617;
@@ -85,10 +90,6 @@ tr:hover {
   padding:15px;
   border-radius:10px;
   margin-bottom:10px;
-  transition:0.2s;
-}
-.match:hover {
-  transform:scale(1.02);
 }
 .win {
   color:#22c55e;
@@ -140,7 +141,6 @@ img { width:120px; border-radius:10px; }
 
 <div id="main">
 
-<!-- Discord -->
 <div class="card fade-in">
 <h2>💬 Присоединяйся</h2>
 <a class="discord-btn" href="https://discord.gg/rQ37EJXH" target="_blank">
@@ -148,55 +148,48 @@ img { width:120px; border-radius:10px; }
 </a>
 </div>
 
-<!-- MVP -->
 <div class="card fade-in">
 <h2>🏆 Лидеры</h2>
-<p><b>MVP:</b> Faerbol4ik1 (2), TUTY_FRUTY (1)</p>
-<p><b>EVP:</b> Marcocondesso (3), Soul_hunter (1),
-Fillipepipoquese (1), Faerbol4ik1 (1), TUTY_FRUTY (1)</p>
+<p><b>MVP:</b> Faerbol4ik1 (3), TUTY_FRUTY (1)</p>
+<p><b>EVP:</b> Marcocondesso (3), TUTY_FRUTY (2), Fillipepipoquese (1), Faerbol4ik1 (1), Soul_hunter (1), Kurtikswagga (1) </p>
 </div>
 
-<!-- Ranking -->
 <div class="card fade-in">
 <h2>📊 Ranking</h2>
 <input id="search" placeholder="Поиск...">
 <table id="rankingTable"></table>
+
+<p>📌 Турниров учтено: 4</p>
+<p>🗓️ Последнее обновление: 02.04</p>
 </div>
 
-<!-- Matches -->
 <div class="card fade-in">
-<h2>🎮 Последние матчи (Nexus Masters)</h2>
+<h2>🎮 Последние матчи (NoobSlayer Random Cup)</h2>
 
 <div class="match">
 <b>ФИНАЛ</b><br>
-TUTY_FRUTY vs Fillipepipoquese <span class="win">3:1</span><br>
-<small>2:5 | 5:1 | 5:2 | 5:1</small>
+Faerbol4ik1 vs TUTY_FRUTY <span class="win">2:0</span>
 </div>
 
 <div class="match">
-<b>3 место</b><br>
-Faerbol4ik1 vs Marcocondesso <span class="win">1:0 (тех)</span>
+<b>Полуфинал нижней сетки</b><br>
+TUTY_FRUTY vs Kurtikswagga <span class="win">2:0</span><br>
 </div>
-
+  
+<div class="match">
+<b>Раунд нижней сетки 2</b><br>
+Kurtikswagga vs Ilun4ik_eye <span class="win">2:0</span><br>
+</div>
+  
 <div class="match">
 <b>Полуфинал</b><br>
-TUTY_FRUTY vs Faerbol4ik1 <span class="win">2:1</span><br>
-<small>5:3 | 3:5 | 5:4</small><br><br>
-Fillipepipoquese vs Marcocondesso <span class="win">1:0 (тех)</span>
-</div>
-
-<div class="match">
-<b>Группы</b><br>
-Fillipepipoquese vs TUTY_FRUTY <span class="win">2:0</span><br>
-<small>5:1 | 5:1</small><br><br>
-Kurtikswagga vs Soul_hunter <span class="win">1:2</span>
+TUTY_FRUTY vs Faerbol4ik1 <span class="win">0:2</span><br>
 </div>
 
 </div>
 
 </div>
 
-<!-- профиль -->
 <div id="profile" class="player-profile card fade-in">
 <span onclick="goBack()" style="cursor:pointer;color:#38bdf8;">← Назад</span>
 
@@ -220,15 +213,19 @@ Kurtikswagga vs Soul_hunter <span class="win">1:2</span>
 
 <script>
 
+const main = document.getElementById("main");
+const profile = document.getElementById("profile");
+const search = document.getElementById("search");
+
 const players = [
-{name:"Faerbol4ik1",points:48,kd:1.62,kills:103,deaths:69,hs:"42.4%",mvp:2,evp:1,skin:"https://robohash.org/faerbol.png"},
-{name:"TUTY_FRUTY",points:42,kd:1.17,kills:115,deaths:98,hs:"43.5%",mvp:1,evp:1,skin:"https://robohash.org/tuty.png"},
-{name:"Marcocondesso",points:26,kd:1.03,kills:78,deaths:76,hs:"55.1%",mvp:0,evp:3,skin:"https://robohash.org/marco.png"},
-{name:"Soul_hunter",points:24,kd:0.80,kills:78,deaths:97,hs:"38.5%",mvp:0,evp:1,skin:"https://robohash.org/soul.png"},
-{name:"Fillipepipoquese",points:17,kd:1.24,kills:36,deaths:29,hs:"47.2%",mvp:0,evp:1,skin:"https://robohash.org/filipe.png"},
-{name:"Marsmallow",points:7,kd:0.76,kills:22,deaths:29,hs:"13.6%",mvp:0,evp:0,skin:"https://robohash.org/marshmallow.png"},
-{name:"Ilun4ik_eye",points:5,kd:0.27,kills:18,deaths:67,hs:"22.2%",mvp:0,evp:0,skin:"https://robohash.org/ilun.png"},
-{name:"Kurtikswagga",points:2,kd:0.61,kills:19,deaths:31,hs:"31.6%",mvp:0,evp:0,skin:"https://robohash.org/kurtik.png"}
+{name:"Faerbol4ik1",points:67,change:19,kd:1.62,kills:103,deaths:69,hs:"42.4%",mvp:3,evp:1,skin:"https://www.roblox.com/users/5304762077/profile"},
+{name:"TUTY_FRUTY",points:54,change:12,kd:1.17,kills:115,deaths:98,hs:"43.5%",mvp:1,evp:2,skin:"https://www.roblox.com/users/4707972540/profile"},
+{name:"Marcocondesso",points:26,change:0,kd:1.03,kills:78,deaths:76,hs:"55.1%",mvp:0,evp:3,skin:"https://www.roblox.com/users/4745768099/profile"},
+{name:"Soul_hunter",points:25,change:1,kd:0.80,kills:78,deaths:97,hs:"38.5%",mvp:0,evp:1,skin:"https://www.roblox.com/users/7622982682/profile"},
+{name:"Fillipepipoquese",points:17,change:0,kd:1.24,kills:36,deaths:29,hs:"47.2%",mvp:0,evp:1,skin:"https://www.roblox.com/users/1955513065/profile"},
+{name:"Kurtikswagga",points:13,change:10,up:true,kd:0.61,kills:19,deaths:31,hs:"31.6%",mvp:0,evp:1,skin:"https://www.roblox.com/users/1493354707/profile"},
+{name:"Ilun4ik_eye",points:9,change:4,up:true,kd:0.27,kills:18,deaths:67,hs:"22.2%",mvp:0,evp:0,skin:"https://www.roblox.com/users/7231461619/profile"},
+{name:"Marsmallow",points:7,change:0,kd:0.76,kills:22,deaths:29,hs:"13.6%",mvp:0,evp:0,skin:"https://www.roblox.com/users/4928282379/profile"}
 ];
 
 players.sort((a,b)=>b.points-a.points);
@@ -239,11 +236,18 @@ function render(list){
   table.innerHTML = "<tr><th>#</th><th>Player</th><th>Points</th></tr>";
 
   list.forEach((p,i)=>{
+
+    let arrow = p.up ? `<span class="up">↑</span>` : "";
+    let change = p.change ? `<span class="change">(+${p.change})</span>` : "";
+
     table.innerHTML += `
     <tr onclick="openProfile('${p.name}')">
       <td>${i+1}</td>
-      <td>${p.name}</td>
-      <td><span class="points">${p.points}</span></td>
+      <td>${p.name} ${arrow}</td>
+      <td>
+        <span class="points">${p.points}</span><br>
+        ${change}
+      </td>
     </tr>`;
   });
 }
@@ -266,7 +270,6 @@ function openProfile(name){
   playerSkin.src=p.skin;
 
   const gauge = document.getElementById("kdGauge");
-
   const percent = Math.min((p.kd / 2) * 100, 100);
 
   let color = "#ef4444";
